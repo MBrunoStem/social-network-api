@@ -30,7 +30,7 @@ const thoughtsController = {
           });
     },
 
-    updateThought (req, res) {
+    removeThought (req, res) {
         Thoughts.findOneAndDelete({
             _id: req.params.userId
         })
@@ -50,17 +50,18 @@ const thoughtsController = {
         Thoughts.create
     },
 
-    removeThought (req, res) {
-        Thoughts.findOneAndDelete
+    removeReaction (req, res) {
+        Thoughts.findOneAndUpdate
+    },
+
+    updateThought (req, res) {
+        Thoughts.findOneAndUpdate
     },
 
     addReaction (req, res) {
         Thoughts.findOneAndUpdate
     },
 
-    removeReaction (req, res) {
-        Thoughts.findOneAndUpdate
-    },
 };
 
 module.exports = thoughtsController;

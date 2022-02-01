@@ -47,13 +47,14 @@ const usersController = {
           });
     },
 
+    addUser(req, res) {
+        Users.create
+    },
+
     updateUser(req, res) {
         Users.findOneAndUpdate
     },
 
-    addUser(req, res) {
-        Users.create
-    },
 
     addFriend(req, res) {
         Users.findOneAndUpdate
