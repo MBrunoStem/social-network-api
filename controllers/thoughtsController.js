@@ -47,21 +47,27 @@ const thoughtsController = {
     },
 
     addThought (req, res) {
-        Thoughts.create
-    },
-
-    removeReaction (req, res) {
-        Thoughts.findOneAndUpdate
+        Thoughts.create(req.body)
+        .then((thoughtsData) => res.json(thoughtsData))
+        .catch((err) => {
+          console.log(err);
+          return res.status(500).json(err);
+        });
     },
 
     updateThought (req, res) {
-        Thoughts.findOneAndUpdate
-    },
-
-    addReaction (req, res) {
-        Thoughts.findOneAndUpdate
-    },
-
+        Thoughts.findOneAndUpdate(
+            { _id: req.params.thoughtsId },
+            { $set: req.body },
+            { runValidators: true, new: true }
+          )
+            .then((thoughtsData) =>
+              !thoughtsData
+                ? res.status(404).json({ message: 'No Thought with this id!' })
+                : res.json(thoughtsData)
+            )
+            .catch((err) => res.status(500).json(err));
+        },
 };
 
 module.exports = thoughtsController;

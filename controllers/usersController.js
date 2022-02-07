@@ -17,7 +17,7 @@ const usersController = {
         Users.findOne({
             _id: req.params.userId
         })
-        .populate("Friends")
+        // .populate("Friends")
         .populate("Thoughts")
         .then(async(usersData) => {
             if (!usersData) {
@@ -48,20 +48,25 @@ const usersController = {
     },
 
     addUser(req, res) {
-        Users.create
+        Users.create(req.body)
+        .then((user) => res.json(user))
+        .catch((err) => res.status(500).json(err));
     },
 
     updateUser(req, res) {
-        Users.findOneAndUpdate
-    },
-
-
-    addFriend(req, res) {
-        Users.findOneAndUpdate
-    },
-    
-    removeFriend(req, res) {
-        Users.findOneAndUpdate
+        Users.findOneAndUpdate(
+            { _id: req.params.userId },
+            { $set: req.body },
+            { runValidators: true, new: true }
+          )
+            .then((usersData) =>
+              !usersData
+                ? res
+                    .status(404)
+                    .json({ message: 'No User found with that id!' })
+                : res.json(usersData)
+            )
+            .catch((err) => res.status(500).json(err));
     },
 };
 
